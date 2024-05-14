@@ -37,18 +37,25 @@
 
 * 사무실 직원 정보 수집
 ```
-blank
-```
+@app.route("/entrance", methods=["POST"])
+def entrace():
+    try:
+        record = json.loads(request.data)
 
-* 사무실 환경 센서
-```
-blank
-```
+        producer.send(
+            "entrance",
+            key=record["name"],
+            value={
+                "record_type": record["value"],
+                "value": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            },
+        )
 
-* 사무실 환경 규칙
+        return {"success": True}
+    except Exception as e:
+        return {"success": False, "detail": str(e)}
 ```
-blank
-```
+ * 사무실 환경 센서, 사무실 환경 규칙 관련 코드도 위와 매우 유사하기 때문에 생략 
 
 
 
